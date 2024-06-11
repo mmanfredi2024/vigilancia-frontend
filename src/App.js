@@ -1,44 +1,16 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { Grid, Button, Card, CardContent, Typography } from '@mui/material';
+import React from 'react';
+import './App.css';
+import CentroMonitoreo from './CentroMonitoreo';
 
-const Toten = ({ id, videoUrl, controlUrl }) => {
-  const handleControl = (device) => {
-    axios.post(`${controlUrl}/control`, { device });
-  };
-
+function App() {
   return (
-    <Card>
-      <CardContent>
-        <Typography variant="h5">Tótem {id}</Typography>
-        <iframe src={videoUrl} width="100%" height="300px" title={`Tótem ${id}`} />
-        <Button onClick={() => handleControl('lock')}>Cerrar/Abrir Puerta</Button>
-        <Button onClick={() => handleControl('siren')}>Activar/Desactivar Sirena</Button>
-        <Button onClick={() => handleControl('light')}>Encender/Apagar Luces</Button>
-        <Button onClick={() => handleControl('audio')}>Activar/Desactivar Audio</Button>
-      </CardContent>
-    </Card>
+    <div className="App">
+      <header className="App-header">
+        <h1>Bienvenido a la Aplicación de Vigilancia</h1>
+      </header>
+      <CentroMonitoreo />
+    </div>
   );
-};
+}
 
-const CentroMonitoreo = () => {
-  const [totens, setTotens] = useState([]);
-
-  useEffect(() => {
-    axios.get('/api/totens').then(response => {
-      setTotens(response.data);
-    });
-  }, []);
-
-  return (
-    <Grid container spacing={2}>
-      {totens.map(toten => (
-        <Grid item xs={12} md={6} key={toten.id}>
-          <Toten id={toten.id} videoUrl={toten.videoUrl} controlUrl={toten.controlUrl} />
-        </Grid>
-      ))}
-    </Grid>
-  );
-};
-
-export default CentroMonitoreo;
+export default App;
