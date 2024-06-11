@@ -5,7 +5,13 @@ import config from './config';
 
 const Toten = ({ id, videoUrl, controlUrl }) => {
   const handleControl = (device) => {
-    axios.post(`${controlUrl}/control`, { device });
+    axios.post(`${config.API_URL}/api/totens/${id}/control`, { device })
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error("Error controlando el dispositivo:", error);
+      });
   };
 
   return (
@@ -26,9 +32,13 @@ const CentroMonitoreo = () => {
   const [totens, setTotens] = useState([]);
 
   useEffect(() => {
-    axios.get(`${config.API_URL}/api/totens`).then(response => {
-      setTotens(response.data);
-    });
+    axios.get(`${config.API_URL}/api/totens`)
+      .then(response => {
+        setTotens(response.data);
+      })
+      .catch(error => {
+        console.error("Error obteniendo los tótems:", error);
+      });
   }, []);
 
   return (
